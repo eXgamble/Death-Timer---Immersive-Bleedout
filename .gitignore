@@ -7,3 +7,6 @@ skse/build.log
 .vs/
 .vscode/
 Thumbs.db
+
+# MO2's own metadata for the mod folder (MO2 reads the mod through a junction to mod/)
+mod/meta.ini

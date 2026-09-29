@@ -62,7 +62,6 @@ Bleedout Fix (their features are built in).
 ```
 mod/              the mod exactly as installed (Data-shaped): plugin, scripts + source, MCM, SEQ, DLL
 skse/             source of the SKSE plugin (DeathTimer.dll)
-tools/            helper scripts
 LICENSE-MOD.md    license for the mod files (ABR's terms)
 skse/LICENSE      license for the SKSE plugin (GPL-3.0-or-later)
 ```
@@ -90,8 +89,10 @@ are set for the author's machine; adjust them for yours.
 
 ## Development notes
 
-The working copy of the mod is the MO2 mod folder; `mod/` is a copy of it. After changing the mod,
-run `tools/sync-mod.ps1` to mirror the MO2 folder into `mod/` before committing.
+`mod/` is the live mod: the author's MO2 mod folder is a directory junction to it
+(`mklink /J "<MO2>\mods\Death Timer - Immersive Bleedout" "<repo>\mod"`), so the game runs straight
+from the repository, compiled scripts and plugin builds land in it, and `git pull` updates the game.
+MO2's own `mod/meta.ini` is ignored by git.
 
 ## Credits
 
