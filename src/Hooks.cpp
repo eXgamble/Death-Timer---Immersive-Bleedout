@@ -137,12 +137,17 @@ namespace
 	{
 		static void thunk(RE::Actor* a_this, RE::Actor* a_attacker, float a_damage, bool a_sendEvent, bool a_ragdollInstant)
 		{
-			// The death that follows a save: skip it. Everything else dies as normal.
-			if (a_this && JustSaved::Take(a_this->GetFormID())) {
+			// The death that follows a save: skip it. Everything else dies as normal, and a kill by
+			// the player is never blocked (the mark is still consumed).
+			const bool justSaved = a_this && JustSaved::Take(a_this->GetFormID());
+			if (justSaved && a_attacker != RE::PlayerCharacter::GetSingleton()) {
 				logger::info("Blocked death of {} (killer {}), health {:.1f}, life state {}",
 					NameOf(a_this), NameOf(a_attacker), GetHealth(a_this), LifeStateOf(a_this));
 				SendDowned(a_this);
 				return;
+			}
+			if (justSaved) {
+				logger::info("Player kill of {} allowed despite a recent save", NameOf(a_this));
 			}
 			if (IsRescueCandidate(a_this, a_attacker)) {
 				logger::info("KillImpl: {} killed by {} (damage {:.1f}, health {:.1f}, sendEvent={}, ragdollInstant={})",
