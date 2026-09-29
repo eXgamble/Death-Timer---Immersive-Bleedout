@@ -1,0 +1,10 @@
+# Game files: never touch line endings or diff them as text
+*.esp binary
+*.esm binary
+*.esl binary
+*.pex binary
+*.seq binary
+*.dll binary
+*.pdb binary
+# UTF-16 translation files (a line-ending conversion would corrupt them)
+mod/Interface/Translations/*.txt binary
