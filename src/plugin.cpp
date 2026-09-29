@@ -28,10 +28,6 @@ namespace
 			logger::info("Data loaded");
 			Hooks::OnDataLoaded();
 			break;
-		case SKSE::MessagingInterface::kNewGame:
-		case SKSE::MessagingInterface::kPostLoadGame:
-			logger::info("Game started or loaded");
-			break;
 		default:
 			break;
 		}

@@ -27,10 +27,10 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX 
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 target_precompile_headers(${PROJECT_NAME} PRIVATE src/PCH.h)
 
-# Copy the DLL + PDB into a separate MO2 test mod after every build
-set(DEPLOY_DIR "C:/Modding/MO2/mods/Death Timer SKSE Test/SKSE/Plugins" CACHE PATH "Where the built DLL is copied")
+# Copy the DLL into the mod after every build. The PDB (debug symbols, ~35 MB) is not shipped:
+# it stays in build/release for reading our own crash logs.
+set(DEPLOY_DIR "C:/Modding/MO2/mods/Death Timer - Immersive Bleedout/SKSE/Plugins")
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E make_directory "${DEPLOY_DIR}"
 	COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:${PROJECT_NAME}>" "${DEPLOY_DIR}"
-	COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_PDB_FILE:${PROJECT_NAME}>" "${DEPLOY_DIR}"
 	VERBATIM)

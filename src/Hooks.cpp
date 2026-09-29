@@ -9,21 +9,6 @@ namespace
 {
 	RE::BGSKeyword* actorTypeNPC = nullptr;
 
-	float GetHealth(RE::Actor* a_actor)
-	{
-		auto avOwner = a_actor->AsActorValueOwner();
-		return avOwner ? avOwner->GetActorValue(RE::ActorValue::kHealth) : 0.0f;
-	}
-
-	const char* NameOf(RE::Actor* a_actor)
-	{
-		if (!a_actor) {
-			return "<none>";
-		}
-		auto name = a_actor->GetDisplayFullName();
-		return name && *name ? name : "<unnamed>";
-	}
-
 	// The NPCs this plugin is meant to rescue. Everyone else keeps vanilla (or the Papyrus
 	// side's) behaviour: essential/protected NPCs are already knocked out by the mod, and the
 	// player's own blows always kill.
@@ -47,12 +32,6 @@ namespace
 			return false;
 		}
 		return !a_actor->IsHostileToActor(player);
-	}
-
-	int LifeStateOf(RE::Actor* a_actor)
-	{
-		auto state = a_actor->AsActorState();
-		return state ? static_cast<int>(state->GetLifeState()) : -1;
 	}
 
 	// Actors HandleHealthDamage just saved. The engine commits to a death when the fatal damage
@@ -127,8 +106,6 @@ namespace
 			// to the Death Timer. Hits while they're down land here too, so enemies can't finish them.
 			avOwner->RestoreActorValue(RE::ActorValue::kHealth, 1.0f - health);
 			JustSaved::Add(a_this->GetFormID());
-			logger::info("Saving {} from death: hit by {} for {:.1f}, health {:.1f} -> {:.1f}",
-				NameOf(a_this), NameOf(a_attacker), a_damage, health, GetHealth(a_this));
 		}
 		static inline REL::Relocation<decltype(thunk)> func;
 	};
@@ -141,17 +118,8 @@ namespace
 			// the player is never blocked (the mark is still consumed).
 			const bool justSaved = a_this && JustSaved::Take(a_this->GetFormID());
 			if (justSaved && a_attacker != RE::PlayerCharacter::GetSingleton()) {
-				logger::info("Blocked death of {} (killer {}), health {:.1f}, life state {}",
-					NameOf(a_this), NameOf(a_attacker), GetHealth(a_this), LifeStateOf(a_this));
 				SendDowned(a_this);
 				return;
-			}
-			if (justSaved) {
-				logger::info("Player kill of {} allowed despite a recent save", NameOf(a_this));
-			}
-			if (IsRescueCandidate(a_this, a_attacker)) {
-				logger::info("KillImpl: {} killed by {} (damage {:.1f}, health {:.1f}, sendEvent={}, ragdollInstant={})",
-					NameOf(a_this), NameOf(a_attacker), a_damage, GetHealth(a_this), a_sendEvent, a_ragdollInstant);
 			}
 			func(a_this, a_attacker, a_damage, a_sendEvent, a_ragdollInstant);
 		}
@@ -175,9 +143,7 @@ namespace Hooks
 	void OnDataLoaded()
 	{
 		actorTypeNPC = RE::TESForm::LookupByID<RE::BGSKeyword>(0x13794);  // ActorTypeNPC, Skyrim.esm
-		if (actorTypeNPC) {
-			logger::info("ActorTypeNPC keyword found");
-		} else {
+		if (!actorTypeNPC) {
 			logger::error("ActorTypeNPC keyword (Skyrim.esm 013794) not found, no NPC will qualify");
 		}
 	}
