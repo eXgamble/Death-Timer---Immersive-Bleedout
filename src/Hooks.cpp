@@ -8,13 +8,36 @@
 namespace
 {
 	RE::BGSKeyword* actorTypeNPC = nullptr;
+	RE::BGSKeyword* actorTypeAnimal = nullptr;
+	RE::BGSKeyword* actorTypeHorse = nullptr;
 	RE::TESGlobal*  rescueGenericNPCs = nullptr;  // MCM "Rescue Generic NPCs": unnamed NPCs qualify too
+	RE::TESGlobal*  rescueWildlife = nullptr;     // MCM "Rescue Wildlife": friendly animals qualify too
+
+	bool IsOn(const RE::TESGlobal* a_global)
+	{
+		return a_global && a_global->value != 0.0f;
+	}
+
+	// The player's own side: their followers, summons and thralls. Their kills on wildlife count as
+	// the player's, so hunting with companions stays vanilla.
+	bool IsPlayersSide(RE::Actor* a_actor, RE::Actor* a_player)
+	{
+		if (!a_actor) {
+			return false;
+		}
+		if (a_actor->IsPlayerTeammate() || a_actor->IsSummonedByPlayer()) {
+			return true;
+		}
+		return a_actor->IsCommandedActor() && a_actor->GetCommandingActor().get() == a_player;
+	}
 
 	constexpr auto PLUGIN_NAME = "Death Timer - Immersive Bleedout.esp"sv;
 
-	// The NPCs this plugin is meant to rescue: named ones, and unnamed ones too when the MCM option
-	// is on. Everyone else keeps vanilla (or the Papyrus side's) behaviour: essential/protected NPCs
-	// are already knocked out by the mod, and the player's own blows always kill.
+	// Who this plugin rescues:
+	//  - people (ActorTypeNPC): named ones, and unnamed ones too with "Rescue Generic NPCs"
+	//  - with "Rescue Wildlife": any friendly animal except horses, unless the player's side killed it
+	// Everyone else keeps vanilla (or the Papyrus side's) behaviour: essential/protected NPCs are
+	// already knocked out by the mod, and the player's own blows always kill.
 	bool IsRescueCandidate(RE::Actor* a_actor, RE::Actor* a_attacker)
 	{
 		auto player = RE::PlayerCharacter::GetSingleton();
@@ -31,10 +54,18 @@ namespace
 		if (!base || base->IsGhost()) {
 			return false;
 		}
-		if (!base->IsUnique() && !(rescueGenericNPCs && rescueGenericNPCs->value != 0.0f)) {
-			return false;
-		}
-		if (!actorTypeNPC || !a_actor->HasKeyword(actorTypeNPC)) {
+		if (actorTypeNPC && a_actor->HasKeyword(actorTypeNPC)) {
+			if (!base->IsUnique() && !IsOn(rescueGenericNPCs)) {
+				return false;
+			}
+		} else if (actorTypeAnimal && a_actor->HasKeyword(actorTypeAnimal)) {
+			if (!IsOn(rescueWildlife) || (actorTypeHorse && a_actor->HasKeyword(actorTypeHorse))) {
+				return false;
+			}
+			if (IsPlayersSide(a_attacker, player)) {
+				return false;
+			}
+		} else {
 			return false;
 		}
 		return !a_actor->IsHostileToActor(player);
@@ -152,9 +183,17 @@ namespace Hooks
 		if (!actorTypeNPC) {
 			logger::error("ActorTypeNPC keyword (Skyrim.esm 013794) not found, no NPC will qualify");
 		}
-		rescueGenericNPCs = RE::TESDataHandler::GetSingleton()->LookupForm<RE::TESGlobal>(0xFB7, PLUGIN_NAME);
+		actorTypeAnimal = RE::TESForm::LookupByID<RE::BGSKeyword>(0x13798);  // ActorTypeAnimal, Skyrim.esm
+		actorTypeHorse = RE::TESForm::LookupByID<RE::BGSKeyword>(0x26110);   // ActorTypeHorse, Skyrim.esm
+
+		auto dataHandler = RE::TESDataHandler::GetSingleton();
+		rescueGenericNPCs = dataHandler->LookupForm<RE::TESGlobal>(0xFB7, PLUGIN_NAME);
 		if (!rescueGenericNPCs) {
 			logger::error("ANDR_KO_GLOB_RescueGenericNPCs (000FB7) not found in {}, generic NPCs stay excluded", PLUGIN_NAME);
+		}
+		rescueWildlife = dataHandler->LookupForm<RE::TESGlobal>(0xFB8, PLUGIN_NAME);
+		if (!rescueWildlife || !actorTypeAnimal) {
+			logger::error("ANDR_KO_GLOB_RescueWildlife (000FB8) or ActorTypeAnimal not found, wildlife stays excluded");
 		}
 	}
 }
