@@ -8,10 +8,13 @@
 namespace
 {
 	RE::BGSKeyword* actorTypeNPC = nullptr;
+	RE::TESGlobal*  rescueGenericNPCs = nullptr;  // MCM "Rescue Generic NPCs": unnamed NPCs qualify too
 
-	// The NPCs this plugin is meant to rescue. Everyone else keeps vanilla (or the Papyrus
-	// side's) behaviour: essential/protected NPCs are already knocked out by the mod, and the
-	// player's own blows always kill.
+	constexpr auto PLUGIN_NAME = "Death Timer - Immersive Bleedout.esp"sv;
+
+	// The NPCs this plugin is meant to rescue: named ones, and unnamed ones too when the MCM option
+	// is on. Everyone else keeps vanilla (or the Papyrus side's) behaviour: essential/protected NPCs
+	// are already knocked out by the mod, and the player's own blows always kill.
 	bool IsRescueCandidate(RE::Actor* a_actor, RE::Actor* a_attacker)
 	{
 		auto player = RE::PlayerCharacter::GetSingleton();
@@ -25,7 +28,10 @@ namespace
 			return false;
 		}
 		auto base = a_actor->GetActorBase();
-		if (!base || !base->IsUnique() || base->IsGhost()) {
+		if (!base || base->IsGhost()) {
+			return false;
+		}
+		if (!base->IsUnique() && !(rescueGenericNPCs && rescueGenericNPCs->value != 0.0f)) {
 			return false;
 		}
 		if (!actorTypeNPC || !a_actor->HasKeyword(actorTypeNPC)) {
@@ -145,6 +151,10 @@ namespace Hooks
 		actorTypeNPC = RE::TESForm::LookupByID<RE::BGSKeyword>(0x13794);  // ActorTypeNPC, Skyrim.esm
 		if (!actorTypeNPC) {
 			logger::error("ActorTypeNPC keyword (Skyrim.esm 013794) not found, no NPC will qualify");
+		}
+		rescueGenericNPCs = RE::TESDataHandler::GetSingleton()->LookupForm<RE::TESGlobal>(0xFB7, PLUGIN_NAME);
+		if (!rescueGenericNPCs) {
+			logger::error("ANDR_KO_GLOB_RescueGenericNPCs (000FB7) not found in {}, generic NPCs stay excluded", PLUGIN_NAME);
 		}
 	}
 }

@@ -19,7 +19,7 @@ endif()
 add_commonlibsse_plugin(${PROJECT_NAME}
 	NAME "DeathTimer"
 	AUTHOR "eXgamble"
-	SOURCES src/plugin.cpp src/Hooks.cpp)
+	SOURCES src/plugin.cpp src/Hooks.cpp src/Papyrus.cpp)
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 target_compile_options(${PROJECT_NAME} PRIVATE /Zc:preprocessor /permissive- /EHsc /utf-8 /W4)

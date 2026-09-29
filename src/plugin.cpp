@@ -1,6 +1,7 @@
 // Death Timer - Immersive Bleedout: SKSE plugin.
 
 #include "Hooks.h"
+#include "Papyrus.h"
 
 namespace
 {
@@ -41,6 +42,7 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 
 	SKSE::Init(a_skse, false);
 	SKSE::GetMessagingInterface()->RegisterListener(OnMessage);
+	SKSE::GetPapyrusInterface()->Register(Papyrus::Register);
 	Hooks::Install();
 
 	logger::info("DeathTimer loaded");
