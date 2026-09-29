@@ -1,5 +1,6 @@
 // Death Timer - Immersive Bleedout: SKSE plugin.
-// Step 0 (toolchain test): load, log, and show a notification once a game is running.
+
+#include "Hooks.h"
 
 namespace
 {
@@ -25,14 +26,11 @@ namespace
 		switch (a_msg->type) {
 		case SKSE::MessagingInterface::kDataLoaded:
 			logger::info("Data loaded");
+			Hooks::OnDataLoaded();
 			break;
 		case SKSE::MessagingInterface::kNewGame:
 		case SKSE::MessagingInterface::kPostLoadGame:
 			logger::info("Game started or loaded");
-			RE::SendHUDMessage::ShowHUDMessage("Death Timer SKSE test plugin is active.");
-			if (auto console = RE::ConsoleLog::GetSingleton()) {
-				console->Print("Death Timer SKSE test plugin is active.");
-			}
 			break;
 		default:
 			break;
@@ -47,6 +45,7 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 
 	SKSE::Init(a_skse, false);
 	SKSE::GetMessagingInterface()->RegisterListener(OnMessage);
+	Hooks::Install();
 
 	logger::info("DeathTimer loaded");
 	return true;
