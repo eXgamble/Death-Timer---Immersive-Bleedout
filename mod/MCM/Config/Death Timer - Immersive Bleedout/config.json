@@ -22,6 +22,15 @@
       }
     },
     {
+      "type": "toggle",
+      "id": "bFollowerDeathTimer:General",
+      "text": "$ANDR_KO_FollowerDeathTimer",
+      "help": "$ANDR_KO_FollowerDeathTimer_Help",
+      "valueOptions": {
+        "sourceType": "ModSettingBool"
+      }
+    },
+    {
       "type": "slider",
       "id": "fDeathTimerSeconds:General",
       "text": "$ANDR_KO_DeathTimerSeconds",

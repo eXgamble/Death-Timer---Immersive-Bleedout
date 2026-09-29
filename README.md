@@ -15,7 +15,7 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
 ## Features
 
 - **Two paths when an NPC falls**
-  - *Dying*: followers, and NPCs saved from death by the SKSE plugin. A real-time Death Timer
+  - *Dying*: followers (can be switched off in the MCM), and NPCs saved from death by the SKSE plugin. A real-time Death Timer
     (default 60 s, 10-300 s in the MCM). No escaping it by leaving the cell or waiting.
   - *Knocked out*: essential NPCs and protected non-followers. They get back up after a few
     in-game hours and never die.
@@ -35,6 +35,7 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
 | Option | Default |
 |---|---|
 | Recover Hours: in-game hours before a knocked-out NPC recovers on their own (0 = never) | 6 |
+| Follower Death Timer: followers go down dying (off: only knocked out, they recover on their own) | on |
 | Time Until Death: seconds a dying NPC has before they die unless healed | 60 |
 | Rescue Generic NPCs: unnamed friendly NPCs (guards, soldiers, travellers) can be saved too | off |
 | Use Notifications | on |

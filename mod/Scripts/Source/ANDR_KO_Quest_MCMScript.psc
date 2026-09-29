@@ -7,7 +7,16 @@ GlobalVariable Property ANDR_KO_GLOB_AllowNotifications Auto			; bAllowNotificat
 GlobalVariable Property ANDR_KO_GLOB_NotOnlyTeamMates Auto				; bNotOnlyTeamMates
 GlobalVariable Property ANDR_KO_GLOB_RescueGenericNPCs Auto			; bRescueGenericNPCs, read by the SKSE plugin
 
+GlobalVariable Property ANDR_KO_GLOB_FollowerDeathTimer Auto			; bFollowerDeathTimer
+
 ; Not bound in the plugin: resolved on first use
+GlobalVariable Function GetFollowerDeathTimer()
+   If ANDR_KO_GLOB_FollowerDeathTimer == None
+      ANDR_KO_GLOB_FollowerDeathTimer = Game.GetFormFromFile(0xFB8, "Death Timer - Immersive Bleedout.esp") As GlobalVariable
+   EndIf
+   Return ANDR_KO_GLOB_FollowerDeathTimer
+EndFunction
+
 GlobalVariable Function GetRescueGenericNPCs()
    If ANDR_KO_GLOB_RescueGenericNPCs == None
       ANDR_KO_GLOB_RescueGenericNPCs = Game.GetFormFromFile(0xFB7, "Death Timer - Immersive Bleedout.esp") As GlobalVariable
@@ -38,6 +47,9 @@ Event OnSettingChange(string a_ID)
    ElseIf (a_ID == "bAllowNotifications:General")
       ANDR_KO_GLOB_AllowNotifications.SetValue(GetModSettingBool(a_ID) As Int)
 
+   ElseIf (a_ID == "bFollowerDeathTimer:General")
+      GetFollowerDeathTimer().SetValue(GetModSettingBool(a_ID) As Int)
+
    ElseIf (a_ID == "bRescueGenericNPCs:General")
       GetRescueGenericNPCs().SetValue(GetModSettingBool(a_ID) As Int)
 
@@ -66,6 +78,7 @@ Function LoadSettings()
    ; The menu checkbox is the source of truth here (the other way round, the save's value could
    ; overwrite a checkbox the player had ticked and leave the two out of sync)
    GetRescueGenericNPCs().SetValue(GetModSettingBool("bRescueGenericNPCs:General") As Int)
+   GetFollowerDeathTimer().SetValue(GetModSettingBool("bFollowerDeathTimer:General") As Int)
    ; No longer a menu option: always on. Non-followers must still be knocked out for the
    ; two-path design (protected non-followers take the knocked-out path), and this also resets
    ; saves where the old toggle had been switched off.
