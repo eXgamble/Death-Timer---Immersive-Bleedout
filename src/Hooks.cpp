@@ -1,12 +1,8 @@
 #include "Hooks.h"
 
-// Step 1: detection only. Watch for a named, friendly, non-essential, non-protected NPC taking a
-// fatal hit from someone other than the player, and report it. Nothing is prevented yet.
-//
-// Two hooks, because which of them the game uses to decide a death is what this step finds out:
-//  - HandleHealthDamage: logged with health before/after, to see whether health is already
-//    below 0 when it runs (and so whether step 2 can intervene here)
-//  - KillImpl: the engine's "make this actor die", so a candidate reaching it was about to die
+// Keep a named, friendly, non-essential, non-protected NPC alive when someone other than the
+// player lands a fatal hit (HandleHealthDamage). KillImpl is only watched: it also serves
+// scripted kills, so it must never block a death.
 
 namespace
 {
@@ -60,22 +56,32 @@ namespace
 		});
 	}
 
+	// The health loss is already applied when this runs, but the death isn't: the engine kills
+	// the actor a moment later (KillImpl) once it sees health at or below 0. Lifting a rescue
+	// candidate's health back above 0 here keeps that from happening. Only real damage comes
+	// through here, so scripted Kill() calls (quests, this mod's own Death Timer) are untouched.
 	struct HandleHealthDamage
 	{
 		static void thunk(RE::Actor* a_this, RE::Actor* a_attacker, float a_damage)
 		{
 			const bool candidate = IsRescueCandidate(a_this, a_attacker);
-			const float before = candidate ? GetHealth(a_this) : 0.0f;
 
 			func(a_this, a_attacker, a_damage);
 
-			if (candidate) {
-				const float after = GetHealth(a_this);
-				if (after <= 0.0f || before - a_damage <= 0.0f) {
-					logger::info("HandleHealthDamage: {} hit by {} for {:.1f}, health {:.1f} -> {:.1f}, dead={}",
-						NameOf(a_this), NameOf(a_attacker), a_damage, before, after, a_this->IsDead());
-				}
+			if (!candidate || a_this->IsDead()) {
+				return;
 			}
+			auto avOwner = a_this->AsActorValueOwner();
+			const float health = avOwner ? avOwner->GetActorValue(RE::ActorValue::kHealth) : 1.0f;
+			if (health > 0.0f) {
+				return;
+			}
+
+			// Step 2: keep them alive on a sliver of health. They are not knocked down yet (step 3).
+			avOwner->RestoreActorValue(RE::ActorValue::kHealth, 1.0f - health);
+			logger::info("Saved {} from death: hit by {} for {:.1f}, health {:.1f} -> {:.1f}",
+				NameOf(a_this), NameOf(a_attacker), a_damage, health, GetHealth(a_this));
+			Notify(std::format("[Death Timer] {} was saved from death.", NameOf(a_this)));
 		}
 		static inline REL::Relocation<decltype(thunk)> func;
 	};
@@ -87,7 +93,6 @@ namespace
 			if (IsRescueCandidate(a_this, a_attacker)) {
 				logger::info("KillImpl: {} killed by {} (damage {:.1f}, health {:.1f}, sendEvent={}, ragdollInstant={})",
 					NameOf(a_this), NameOf(a_attacker), a_damage, GetHealth(a_this), a_sendEvent, a_ragdollInstant);
-				Notify(std::format("[Death Timer] {} took a fatal hit from {}", NameOf(a_this), NameOf(a_attacker)));
 			}
 			func(a_this, a_attacker, a_damage, a_sendEvent, a_ragdollInstant);
 		}
