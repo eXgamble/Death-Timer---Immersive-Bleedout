@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+  "name": "deathtimer",
+  "version-string": "0.1.0",
+  "builtin-baseline": "ee12231b20c95013c6638d845d04c91559a1d1ff",
+  "dependencies": [
+    "spdlog",
+    "fmt",
+    "directxtk",
+    "directxmath",
+    "rapidcsv",
+    "xbyak"
+  ]
+}
