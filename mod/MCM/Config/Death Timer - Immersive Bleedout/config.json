@@ -1,0 +1,56 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Exit-9B/MCM-Helper/main/docs/config.schema.json",
+  "modName": "Death Timer - Immersive Bleedout",
+  "displayName": "$ANDR_KO_DisplayName",
+  "minMcmVersion": 13,
+  "cursorFillMode": "topToBottom",
+  "content": [
+    {
+      "type": "header",
+      "text": "$ANDR_KO_Header_General"
+    },
+    {
+      "type": "slider",
+      "id": "fRecoverHours:General",
+      "text": "$ANDR_KO_GLOB_RecoverHours",
+      "help": "$ANDR_KO_GLOB_RecoverHours_Help",
+      "valueOptions": {
+        "sourceType": "ModSettingFloat",
+        "min": 0.0,
+        "max": 120.0,
+        "step": 1
+      }
+    },
+    {
+      "type": "slider",
+      "id": "fDeathTimerSeconds:General",
+      "text": "$ANDR_KO_DeathTimerSeconds",
+      "help": "$ANDR_KO_DeathTimerSeconds_Help",
+      "valueOptions": {
+        "sourceType": "ModSettingFloat",
+        "min": 10.0,
+        "max": 300.0,
+        "step": 5,
+        "formatString": "{0} s"
+      }
+    },
+    {
+      "type": "toggle",
+      "id": "bRescueGenericNPCs:General",
+      "text": "$ANDR_KO_RescueGenericNPCs",
+      "help": "$ANDR_KO_RescueGenericNPCs_Help",
+      "valueOptions": {
+        "sourceType": "ModSettingBool"
+      }
+    },
+    {
+      "type": "toggle",
+      "id": "bAllowNotifications:General",
+      "text": "$ANDR_KO_GLOB_AllowNotifications",
+      "help": "$ANDR_KO_GLOB_AllowNotifications_Help",
+      "valueOptions": {
+        "sourceType": "ModSettingBool"
+      }
+    }
+  ]
+}

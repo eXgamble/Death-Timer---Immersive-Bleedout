@@ -1,3 +1,9 @@
-build/
-vcpkg_installed/
-build.log
+# SKSE plugin build output (CMake / vcpkg)
+skse/build/
+skse/vcpkg_installed/
+skse/build.log
+
+# Editor / OS clutter
+.vs/
+.vscode/
+Thumbs.db
