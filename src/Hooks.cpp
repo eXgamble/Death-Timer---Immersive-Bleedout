@@ -87,11 +87,18 @@ namespace
 		static inline std::unordered_map<RE::FormID, Clock::time_point> saved;
 	};
 
-	// Hooks can run off the main thread; UI work goes through the task queue.
-	void Notify(std::string a_message)
+	// Hand the actor to the Papyrus side (ANDR_KO_QuestScript.OnNPCDowned), which knocks them out
+	// onto the Death Timer. Sent from the task queue: hooks can run off the main thread, and the
+	// handle guards against the actor being unloaded in between.
+	void SendDowned(RE::Actor* a_actor)
 	{
-		SKSE::GetTaskInterface()->AddTask([message = std::move(a_message)]() {
-			RE::SendHUDMessage::ShowHUDMessage(message.c_str());
+		SKSE::GetTaskInterface()->AddTask([handle = a_actor->GetHandle()]() {
+			auto ref = handle.get();
+			if (!ref) {
+				return;
+			}
+			SKSE::ModCallbackEvent event{ "DeathTimer_Downed"sv, ""sv, 0.0f, ref.get() };
+			SKSE::GetModCallbackEventSource()->SendEvent(&event);
 		});
 	}
 
@@ -116,7 +123,8 @@ namespace
 				return;
 			}
 
-			// Step 2: keep them alive on a sliver of health. They are not knocked down yet (step 3).
+			// Keep them alive on a sliver of health; KillImpl then skips the death and hands them
+			// to the Death Timer. Hits while they're down land here too, so enemies can't finish them.
 			avOwner->RestoreActorValue(RE::ActorValue::kHealth, 1.0f - health);
 			JustSaved::Add(a_this->GetFormID());
 			logger::info("Saving {} from death: hit by {} for {:.1f}, health {:.1f} -> {:.1f}",
@@ -133,7 +141,7 @@ namespace
 			if (a_this && JustSaved::Take(a_this->GetFormID())) {
 				logger::info("Blocked death of {} (killer {}), health {:.1f}, life state {}",
 					NameOf(a_this), NameOf(a_attacker), GetHealth(a_this), LifeStateOf(a_this));
-				Notify(std::format("[Death Timer] {} was saved from death.", NameOf(a_this)));
+				SendDowned(a_this);
 				return;
 			}
 			if (IsRescueCandidate(a_this, a_attacker)) {
