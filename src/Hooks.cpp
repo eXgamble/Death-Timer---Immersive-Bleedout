@@ -1,8 +1,9 @@
 #include "Hooks.h"
 
 // Keep a named, friendly, non-essential, non-protected NPC alive when someone other than the
-// player lands a fatal hit (HandleHealthDamage). KillImpl is only watched: it also serves
-// scripted kills, so it must never block a death.
+// player lands a fatal hit: HandleHealthDamage lifts their health back above 0 and marks them,
+// and KillImpl skips the death the engine had already committed to for a marked actor.
+// KillImpl also serves scripted kills (quests, this mod's Death Timer), which are never marked.
 
 namespace
 {
@@ -48,6 +49,44 @@ namespace
 		return !a_actor->IsHostileToActor(player);
 	}
 
+	int LifeStateOf(RE::Actor* a_actor)
+	{
+		auto state = a_actor->AsActorState();
+		return state ? static_cast<int>(state->GetLifeState()) : -1;
+	}
+
+	// Actors HandleHealthDamage just saved. The engine commits to a death when the fatal damage
+	// lands and carries it out in KillImpl a frame later, even with health back above 0, so
+	// KillImpl has to skip the death for these. Scripted kills never follow a save, so they
+	// are never in here.
+	class JustSaved
+	{
+	public:
+		static void Add(RE::FormID a_id)
+		{
+			std::scoped_lock lock(mutex);
+			saved[a_id] = Clock::now();
+		}
+
+		// true (and forgets the entry) if a_id was saved within the last half second
+		static bool Take(RE::FormID a_id)
+		{
+			std::scoped_lock lock(mutex);
+			auto it = saved.find(a_id);
+			if (it == saved.end()) {
+				return false;
+			}
+			const bool recent = Clock::now() - it->second < 500ms;
+			saved.erase(it);
+			return recent;
+		}
+
+	private:
+		using Clock = std::chrono::steady_clock;
+		static inline std::mutex mutex;
+		static inline std::unordered_map<RE::FormID, Clock::time_point> saved;
+	};
+
 	// Hooks can run off the main thread; UI work goes through the task queue.
 	void Notify(std::string a_message)
 	{
@@ -79,9 +118,9 @@ namespace
 
 			// Step 2: keep them alive on a sliver of health. They are not knocked down yet (step 3).
 			avOwner->RestoreActorValue(RE::ActorValue::kHealth, 1.0f - health);
-			logger::info("Saved {} from death: hit by {} for {:.1f}, health {:.1f} -> {:.1f}",
+			JustSaved::Add(a_this->GetFormID());
+			logger::info("Saving {} from death: hit by {} for {:.1f}, health {:.1f} -> {:.1f}",
 				NameOf(a_this), NameOf(a_attacker), a_damage, health, GetHealth(a_this));
-			Notify(std::format("[Death Timer] {} was saved from death.", NameOf(a_this)));
 		}
 		static inline REL::Relocation<decltype(thunk)> func;
 	};
@@ -90,6 +129,13 @@ namespace
 	{
 		static void thunk(RE::Actor* a_this, RE::Actor* a_attacker, float a_damage, bool a_sendEvent, bool a_ragdollInstant)
 		{
+			// The death that follows a save: skip it. Everything else dies as normal.
+			if (a_this && JustSaved::Take(a_this->GetFormID())) {
+				logger::info("Blocked death of {} (killer {}), health {:.1f}, life state {}",
+					NameOf(a_this), NameOf(a_attacker), GetHealth(a_this), LifeStateOf(a_this));
+				Notify(std::format("[Death Timer] {} was saved from death.", NameOf(a_this)));
+				return;
+			}
 			if (IsRescueCandidate(a_this, a_attacker)) {
 				logger::info("KillImpl: {} killed by {} (damage {:.1f}, health {:.1f}, sendEvent={}, ragdollInstant={})",
 					NameOf(a_this), NameOf(a_attacker), a_damage, GetHealth(a_this), a_sendEvent, a_ragdollInstant);
