@@ -25,7 +25,8 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
 - **They thank you**, in their own voice, using Skyrim's shared "thanks" lines (39 voice types).
 - **Search** a downed NPC: hold the Modifier Key Framework modifier key (Left Shift / Left Shoulder
   by default) and the prompt switches to `Search`; activate to open their inventory.
-- **Finish them yourself**: a harmful hit from you on a downed NPC kills them (healing never does).
+- **Finish them yourself**: a harmful hit from you on a downed NPC kills them. It counts as your kill,
+  followers included, so killing a follower is a crime, as in vanilla.
 - **SKSE plugin**: named, friendly NPCs (and, with the MCM option, unnamed ones) that take a fatal
   hit from anyone but you go down dying instead of dying outright. Enemies leave them alone while
   they're down. Scripted and quest deaths are never touched.
