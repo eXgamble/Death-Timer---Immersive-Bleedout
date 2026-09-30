@@ -1,0 +1,13 @@
+{
+  // Death Timer - Immersive Bleedout: activation of a knocked-out / dying NPC (eX Modifier Framework rule file)
+  "rules": [
+    {
+      "id": "downed",
+      "target": "npc",
+      "requires": { "item": "Death Timer - Immersive Bleedout.esp|0x807", "alive": true },
+      "primary":   { "label": "Give Potion", "event": "DeathTimer_GivePotion" },
+      "alternate": { "label": "Search",      "event": "DeathTimer_Search" },
+      "priority": 50
+    }
+  ]
+}

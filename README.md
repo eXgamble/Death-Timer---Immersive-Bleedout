@@ -20,9 +20,11 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
   - *Knocked out*: essential NPCs and protected non-followers. They get back up after a few
     in-game hours and never die.
 - **Rescue**: activate a downed NPC to **Give Potion** (your cheapest healing potion; food, poisons
-  and, for non-vampires, blood potions are skipped), or use any healing spell.
+  and, for non-vampires, blood potions are skipped), or use any healing spell. The prompt reads
+  `Give Potion +` with their name below; the `+` means a second action is available.
 - **They thank you**, in their own voice, using Skyrim's shared "thanks" lines (39 voice types).
-- **Search** a downed NPC by holding the Dynamic Activation Key.
+- **Search** a downed NPC: hold the eX Modifier Framework modifier key (Left Shift / Left Shoulder
+  by default) and the prompt switches to `Search`; activate to open their inventory.
 - **Finish them yourself**: a harmful hit from you on a downed NPC kills them (healing never does).
 - **SKSE plugin**: named, friendly NPCs (and, with the MCM option, unnamed ones) that take a fatal
   hit from anyone but you go down dying instead of dying outright. Enemies leave them alone while
@@ -49,7 +51,7 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
 - [MCM Helper](https://www.nexusmods.com/skyrimspecialedition/mods/53000)
 - [powerofthree's Papyrus Extender](https://www.nexusmods.com/skyrimspecialedition/mods/22854)
 - [Spell Perk Item Distributor (SPID)](https://www.nexusmods.com/skyrimspecialedition/mods/36869)
-- [Dynamic Activation Key](https://www.nexusmods.com/skyrimspecialedition/mods/96273)
+- **eX Modifier Framework** (by eXgamble): the Give Potion / Search activation and the modifier key
 - [Andrealletius' Papyrus Functions](https://www.nexusmods.com/skyrimspecialedition/mods/85252)
 - Optional: [FormList Manipulator](https://www.nexusmods.com/skyrimspecialedition/mods/74037)
   (CACO blood potion and Vokrii compatibility)

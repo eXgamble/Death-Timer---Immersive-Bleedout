@@ -5,7 +5,7 @@ Scriptname PRKF_ANDR_KO_TextReplacement_0100080C Extends Perk Hidden
 ;BEGIN FRAGMENT Fragment_0
 Function Fragment_0(ObjectReference akTargetRef, Actor akActor)
 ;BEGIN CODE
-; Teammates: Give Potion
+; UNUSED (perk entry disabled): Give Potion now runs through eX Modifier Framework (DeathTimer.json)
 If ANDR_KO_PlayerAliasQuest == None
 	ANDR_KO_PlayerAliasQuest = Game.GetFormFromFile(0x80B, "Death Timer - Immersive Bleedout.esp") As Quest
 EndIf
@@ -17,7 +17,7 @@ EndFunction
 ;BEGIN FRAGMENT Fragment_2
 Function Fragment_2(ObjectReference akTargetRef, Actor akActor)
 ;BEGIN CODE
-; Non-teammates: Give Potion
+; UNUSED (perk entry disabled): Give Potion now runs through eX Modifier Framework (DeathTimer.json)
 If ANDR_KO_PlayerAliasQuest == None
 	ANDR_KO_PlayerAliasQuest = Game.GetFormFromFile(0x80B, "Death Timer - Immersive Bleedout.esp") As Quest
 EndIf
@@ -41,7 +41,7 @@ EndFunction
 ;BEGIN FRAGMENT Fragment_5
 Function Fragment_5(ObjectReference akTargetRef, Actor akActor)
 ;BEGIN CODE
-; Knocked out + Dynamic Activation Key held: Search
+; UNUSED (perk entry disabled): Search now runs through eX Modifier Framework (modifier key)
 Utility.Wait(0.1)
 (akTargetRef As Actor).OpenInventory(true)
 ;END CODE

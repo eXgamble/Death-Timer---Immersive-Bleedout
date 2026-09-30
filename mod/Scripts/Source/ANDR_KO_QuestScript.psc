@@ -121,7 +121,24 @@ EndFunction
 ; Re-registered on every game load by ANDR_KO_PlayerAliasScript: mod event registrations don't survive a reload.
 Function RegisterForDownedEvent()
 	RegisterForModEvent("DeathTimer_Downed", "OnNPCDowned")
+	; Activating a downed NPC, through eX Modifier Framework (rule file SKSE\Plugins\eXModifierFramework\DeathTimer.json)
+	RegisterForModEvent("DeathTimer_GivePotion", "OnGivePotionActivated")
+	RegisterForModEvent("DeathTimer_Search", "OnSearchActivated")
 EndFunction
+
+Event OnGivePotionActivated(String asEventName, String asStrArg, Float afNumArg, Form akSender)
+	Actor akActor = akSender As Actor
+	If akActor && !akActor.IsDead()
+		AdministerPotion(akActor)
+	EndIf
+EndEvent
+
+Event OnSearchActivated(String asEventName, String asStrArg, Float afNumArg, Form akSender)
+	Actor akActor = akSender As Actor
+	If akActor
+		akActor.OpenInventory(true)
+	EndIf
+EndEvent
 
 Event OnInit()
 	RegisterForDownedEvent()
