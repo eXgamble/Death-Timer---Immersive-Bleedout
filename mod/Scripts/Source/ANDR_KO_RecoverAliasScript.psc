@@ -57,8 +57,8 @@ EndEvent
 ; The player finishing off a knocked-out NPC. This mod holds them down at low health, which keeps
 ; the engine from ever killing them, so a hit that takes their health to 0 or below has to be
 ; turned into a real death here.
-; Essential NPCs are never killed. Dying followers die as they would from the timer; everyone else
-; (protected non-followers, NPCs downed by the SKSE plugin) dies as in vanilla, with the player as killer.
+; Essential NPCs are never killed. Everyone else, followers included, dies as in vanilla with the
+; player as their killer: only the Death Timer running out kills without one.
 Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, bool abBashAttack, bool abHitBlocked)
     Actor SelfActor = Self.GetReference() As Actor
     If Dying || SelfActor == None || akAggressor != Game.GetPlayer()
@@ -70,8 +70,7 @@ Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile,
         Return
     EndIf
     If SelfActor.GetItemCount(ANDR_KO_Token) > 0 && !SelfActor.IsEssential() && SelfActor.GetActorValue("Health") <= 0
-        Bool ByPlayer = !SelfActor.IsPlayerTeammate()
-        Die(SelfActor, ByPlayer)
+        Die(SelfActor, True)
     EndIf
 EndEvent
 
