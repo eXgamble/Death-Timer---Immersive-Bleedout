@@ -1,0 +1,138 @@
+[center][size=6][b]Death Timer - Immersive Bleedout[/b][/size]
+[size=3][i]Your followers can die. You just get a chance to save them first.[/i][/size][/center]
+
+[line]
+
+[size=5][b]Overview[/b][/size]
+In vanilla Skyrim your followers are nearly unkillable: they drop to one knee, wait a few seconds and get back up as if nothing happened. [b]Death Timer[/b] changes that. When a follower goes down they are [b]unconscious and dying[/b], and a real-time clock starts. Heal them before it runs out and they get back on their feet and thank you. Let it run out and they are gone for good.
+
+It doesn't stop at followers. With the included SKSE plugin, [b]named NPCs[/b] who would have died outright to an enemy fall dying instead, and can be saved the same way. Optionally, so can guards, soldiers and other unnamed friendly NPCs.
+
+The rest of Skyrim stays safe. Essential characters and protected NPCs who aren't your followers are only [b]knocked out[/b] and recover on their own, so quests and story characters are never put at risk.
+
+Built on [b]Andrealletius' Bleedout Revamp (ABR)[/b], reworked and expanded.
+
+[line]
+
+[size=5][b]Features[/b][/size]
+
+[size=4][b]Two paths: dying or knocked out[/b][/size]
+When a friendly NPC falls, they collapse, unconscious and paralysed, and go down one of two paths:
+
+[list]
+[*][b]Dying:[/b] "[i]Lydia has fallen unconscious and is dying.[/i]" A real-time [b]Death Timer[/b] starts. Heal them before it runs out, or they die. This path covers:
+[list]
+[*]your [b]followers[/b] (can be switched off in the MCM)
+[*][b]named NPCs[/b] saved from death by the SKSE plugin
+[*][b]unnamed NPCs[/b] such as guards and soldiers, if you turn on "Rescue Generic NPCs"
+[/list]
+[*][b]Knocked out:[/b] "[i]Ulfric is knocked out.[/i]" Essential NPCs and protected NPCs who aren't your followers stay down, then get back up on their own after a few in-game hours. [b]They never die[/b], so quests can't break.
+[/list]
+
+Hostile NPCs, and anyone killed by a script or quest, die exactly as in vanilla.
+
+[size=4][b]The Death Timer[/b][/size]
+[list]
+[*]Real-time countdown, [b]60 seconds[/b] by default, adjustable from [b]10 to 300 seconds[/b].
+[*]No loopholes: walking away, changing cells or waiting won't save them. Only healing will.
+[*]While they're down, [b]enemies leave them alone[/b]. The fight moves on to you.
+[*]Healed in time? The timer stops and they get up.
+[*]Too late? They die for real. Nobody is blamed: no bounty, no murder on your record.
+[*]Works with vanilla followers and [b]Simple Follower Framework[/b]. A follower who dies is cleanly released from their follower slot, so you can recruit someone new.
+[*]Essential followers (e.g. [b]Serana[/b]) take the knocked-out path and can never die.
+[/list]
+
+[size=4][b]Saving named NPCs (SKSE plugin)[/b][/size]
+In vanilla, a named NPC who isn't essential or protected, like Skulvar Sable-Hilt or a named traveller, simply dies when a bandit or dragon lands the killing blow. With Death Timer, that blow is caught at the last moment: [b]they fall dying instead[/b], and you have until the timer runs out to reach them.
+[list]
+[*]Only NPCs who are friendly to you. Enemies die normally.
+[*][b]Your[/b] killing blows are never caught: if you strike them down, they die.
+[*]Scripted and quest deaths are never touched.
+[*][b]Rescue Generic NPCs[/b] (off by default) extends this to unnamed NPCs: guards, soldiers, travellers. Big battles can then leave several NPCs dying at once, so it's opt-in.
+[/list]
+
+[size=4][b]Rescue them[/b][/size]
+[list]
+[*][b]Give Potion:[/b] activate a downed NPC to give them a healing potion from your inventory. The prompt reads [b]Give Potion +[/b] with their name below; the [b]+[/b] means a second action is available.
+[*]It picks your [b]cheapest[/b] healing potion, so your good ones stay in your pack.
+[*]Skips food and poisons, and skips [b]blood potions[/b] unless your patient is a vampire.
+[*]Healing spells work too: Healing Hands, Heal Other, anything that restores health.
+[/list]
+
+[size=4][b]They thank you[/b][/size]
+Once a rescued NPC is back on their feet, they thank you in their own voice, using Skyrim's own "thank you" lines across [b]39 vanilla voice types[/b] with no new audio: "[i]Thank you.[/i]", "[i]Many thanks![/i]", "[i]Azura bless you.[/i]", "[i]Ysmir's blessing on you.[/i]", "[i]Thanks. I guess.[/i]" and more.
+
+[size=4][b]Search or finish them[/b][/size]
+[list]
+[*][b]Search:[/b] hold the [b]Modifier Key Framework[/b] key (Left Shift, or Left Shoulder on a gamepad) and the prompt switches to [b]Search[/b]; activate to open their inventory.
+[*]A harmful hit from you finishes a downed NPC. Healing never does. Finishing a follower isn't a crime; finishing anyone else is your kill, as in vanilla.
+[/list]
+
+[size=4][b]Fixes and quality of life[/b][/size]
+[list]
+[*][b]Built-in stuck-bleedout fix:[/b] activating an NPC stuck in a bleedout animation helps them up.
+[*][b]Off-screen recovery fix:[/b] an NPC who recovers while you're away gets up properly when you return.
+[*]Fixed an original ABR bug where recovering from negative health didn't restore health correctly.
+[*]Fast potion search that only looks at the potions you carry.
+[*]All status notifications can be turned off.
+[/list]
+
+[line]
+
+[size=5][b]MCM Settings[/b][/size]
+[list]
+[*][b]Recover Hours[/b]: in-game hours before a knocked-out NPC recovers on their own (default 6, 0 = never).
+[*][b]Follower Death Timer[/b]: followers go down dying (default on). Off: followers are only knocked out and recover on their own.
+[*][b]Time Until Death[/b]: seconds a dying NPC has before they die unless healed (default 60, 10 to 300).
+[*][b]Rescue Generic NPCs[/b]: unnamed friendly NPCs can be saved too (default off).
+[*][b]Use Notifications[/b]: knocked out, dying, died and potion messages (default on).
+[/list]
+
+[line]
+
+[size=5][b]Requirements[/b][/size]
+[list]
+[*]Skyrim [b]Anniversary Edition[/b] 1.6.x or 1.7.x (the SKSE plugin is AE only)
+[*]SKSE64
+[*]Address Library for SKSE Plugins ([b]v13 or newer[/b] if you're on 1.7.104)
+[*]SkyUI
+[*]MCM Helper
+[*]powerofthree's Papyrus Extender
+[*]Spell Perk Item Distributor (SPID)
+[*][url=https://github.com/eXgamble/Modifier-Key-Framework]Modifier Key Framework[/url] (by eXgamble): the Give Potion / Search prompt and the modifier key
+[*]Andrealletius' Papyrus Functions
+[/list]
+
+[b]Optional:[/b] FormList Manipulator, for the included CACO blood potion and Vokrii compatibility.
+
+[line]
+
+[size=5][b]Compatibility[/b][/size]
+[list]
+[*][b]Do not use with Andrealletius' Bleedout Revamp (ABR).[/b] This mod replaces it.
+[*][b]Not needed with:[/b] Press E to Heal Followers, NPC Stuck in Bleedout Fix. Their features are built in.
+[*]Not compatible with other bleedout or follower-death overhauls that change the same behaviour.
+[*]Followers managed by their own follower framework (other than vanilla or Simple Follower Framework) may be protected by that framework and survive the timer.
+[*]Your currently ridden horse is never knocked out by this mod.
+[*]If you're coming from ABR, remove it and make a clean save first.
+[/list]
+
+[size=4][b]Known limitations[/b][/size]
+[list]
+[*]An enemy's [b]kill move[/b] may kill an NPC outright without giving them the chance to fall dying.
+[*]Voice types without a vanilla "thanks" line (e.g. Serana, some custom followers) get up silently.
+[/list]
+
+[line]
+
+[size=5][b]Source & Permissions[/b][/size]
+Source code for the mod and the SKSE plugin: [url=https://github.com/eXgamble/Death-Timer---Immersive-Bleedout]GitHub[/url]
+[list]
+[*][b]Mod files:[/b] same terms as ABR. Free to redistribute, modify and include, as long as you credit the authors, link back, and keep the same terms.
+[*][b]SKSE plugin:[/b] GPL-3.0-or-later.
+[/list]
+
+[line]
+
+[size=5][b]Credits[/b][/size]
+[i]add your ABR credits here[/i]

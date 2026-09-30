@@ -51,7 +51,7 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
 - [MCM Helper](https://www.nexusmods.com/skyrimspecialedition/mods/53000)
 - [powerofthree's Papyrus Extender](https://www.nexusmods.com/skyrimspecialedition/mods/22854)
 - [Spell Perk Item Distributor (SPID)](https://www.nexusmods.com/skyrimspecialedition/mods/36869)
-- **Modifier Key Framework** (by eXgamble): the Give Potion / Search activation and the modifier key
+- [Modifier Key Framework](https://github.com/eXgamble/Modifier-Key-Framework) (by eXgamble): the Give Potion / Search activation and the modifier key
 - [Andrealletius' Papyrus Functions](https://www.nexusmods.com/skyrimspecialedition/mods/85252)
 - Optional: [FormList Manipulator](https://www.nexusmods.com/skyrimspecialedition/mods/74037)
   (CACO blood potion and Vokrii compatibility)
