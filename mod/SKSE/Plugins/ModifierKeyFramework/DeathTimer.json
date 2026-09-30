@@ -1,5 +1,5 @@
 {
-  // Death Timer - Immersive Bleedout: activation of a knocked-out / dying NPC (eX Modifier Framework rule file)
+  // Death Timer - Immersive Bleedout: activation of a knocked-out / dying NPC (Modifier Key Framework rule file)
   "rules": [
     {
       "id": "downed",

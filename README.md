@@ -23,7 +23,7 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
   and, for non-vampires, blood potions are skipped), or use any healing spell. The prompt reads
   `Give Potion +` with their name below; the `+` means a second action is available.
 - **They thank you**, in their own voice, using Skyrim's shared "thanks" lines (39 voice types).
-- **Search** a downed NPC: hold the eX Modifier Framework modifier key (Left Shift / Left Shoulder
+- **Search** a downed NPC: hold the Modifier Key Framework modifier key (Left Shift / Left Shoulder
   by default) and the prompt switches to `Search`; activate to open their inventory.
 - **Finish them yourself**: a harmful hit from you on a downed NPC kills them (healing never does).
 - **SKSE plugin**: named, friendly NPCs (and, with the MCM option, unnamed ones) that take a fatal
@@ -51,7 +51,7 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
 - [MCM Helper](https://www.nexusmods.com/skyrimspecialedition/mods/53000)
 - [powerofthree's Papyrus Extender](https://www.nexusmods.com/skyrimspecialedition/mods/22854)
 - [Spell Perk Item Distributor (SPID)](https://www.nexusmods.com/skyrimspecialedition/mods/36869)
-- **eX Modifier Framework** (by eXgamble): the Give Potion / Search activation and the modifier key
+- **Modifier Key Framework** (by eXgamble): the Give Potion / Search activation and the modifier key
 - [Andrealletius' Papyrus Functions](https://www.nexusmods.com/skyrimspecialedition/mods/85252)
 - Optional: [FormList Manipulator](https://www.nexusmods.com/skyrimspecialedition/mods/74037)
   (CACO blood potion and Vokrii compatibility)
