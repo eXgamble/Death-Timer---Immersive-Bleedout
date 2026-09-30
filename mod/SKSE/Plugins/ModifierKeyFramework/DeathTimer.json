@@ -1,12 +1,13 @@
 {
   // Death Timer - Immersive Bleedout: activation of a knocked-out / dying NPC (Modifier Key Framework rule file)
+  "translations": "Death Timer - Immersive Bleedout",  // labels: Interface/Translations/Death Timer - Immersive Bleedout_<LANGUAGE>.txt
   "rules": [
     {
       "id": "downed",
       "target": "npc",
       "requires": { "item": "Death Timer - Immersive Bleedout.esp|0x807", "alive": true },
-      "primary":   { "label": "Give Potion", "event": "DeathTimer_GivePotion" },
-      "alternate": { "label": "Search",      "event": "DeathTimer_Search" },
+      "primary":   { "label": "$ANDR_KO_Prompt_GivePotion", "event": "DeathTimer_GivePotion" },
+      "alternate": { "label": "$ANDR_KO_Prompt_Search",      "event": "DeathTimer_Search" },
       "priority": 50
     }
   ]
