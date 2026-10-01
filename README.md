@@ -20,8 +20,7 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
   - *Knocked out*: essential NPCs and protected non-followers. They get back up after a few
     in-game hours and never die.
 - **Rescue**: activate a downed NPC to **Give Potion** (your cheapest healing potion; food, poisons
-  and, for non-vampires, blood potions are skipped), or use any healing spell. The prompt reads
-  `Give Potion +` with their name below; the `+` means a second action is available.
+  and, for non-vampires, blood potions are skipped), or use any healing spell.
 - **They thank you**, in their own voice, using Skyrim's shared "thanks" lines (39 voice types).
 - **Search** a downed NPC: hold the Modifier Key Framework modifier key (Left Shift / Left Shoulder
   by default) and the prompt switches to `Search`; activate to open their inventory.
