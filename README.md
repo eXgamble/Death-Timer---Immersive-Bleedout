@@ -1,6 +1,6 @@
 # Death Timer - Immersive Bleedout
 
-A Skyrim Special Edition (Anniversary Edition) mod: your followers can die, but you get a chance
+A Skyrim Special Edition / Anniversary Edition mod: your followers can die, but you get a chance
 to save them first. When a follower goes down they are **unconscious and dying**, and a real-time
 timer starts. Heal them in time and they get back up and thank you; let it run out and they are gone.
 
@@ -56,7 +56,8 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
 - Optional: [FormList Manipulator](https://www.nexusmods.com/skyrimspecialedition/mods/74037)
   (CACO blood potion and Vokrii compatibility)
 
-The SKSE plugin supports **Anniversary Edition only** (1.6.x and 1.7.x). Do not use this together
+The SKSE plugin supports **Special Edition 1.5.97 and Anniversary Edition** (1.6.x and 1.7.x), one DLL for both
+(SE 1.5.97 support is new). Do not use this together
 with Andrealletius' Bleedout Revamp (this replaces it), Press E to Heal Followers or NPC Stuck in
 Bleedout Fix (their features are built in).
 
