@@ -4,9 +4,9 @@ project(DeathTimer VERSION 0.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# CommonLibSSE-NG (alandtse ng, git submodule, pinned to v10.0.0). AE only: 1.6.x and 1.7.x.
+# CommonLibSSE-NG (alandtse ng, git submodule, pinned to v10.0.0). SE 1.5.97 and AE 1.6.x / 1.7.x in one DLL.
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(ENABLE_SKYRIM_SE OFF CACHE BOOL "" FORCE)
+set(ENABLE_SKYRIM_SE ON CACHE BOOL "" FORCE)
 set(ENABLE_SKYRIM_AE ON CACHE BOOL "" FORCE)
 set(ENABLE_SKYRIM_VR OFF CACHE BOOL "" FORCE)
 add_subdirectory(lib/commonlibsse-ng commonlib)
