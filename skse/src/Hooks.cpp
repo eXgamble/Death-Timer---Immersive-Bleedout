@@ -8,11 +8,11 @@
 namespace
 {
 	RE::BGSKeyword* actorTypeNPC = nullptr;
-	RE::TESGlobal*  rescueGenericNPCs = nullptr;  // MCM "Rescue Generic NPCs": unnamed NPCs qualify too
+	RE::TESGlobal*  rescueGenericNPCs = nullptr;  // "Rescue Generic NPCs" (DeathTimer.ini, see Settings.cpp): unnamed NPCs qualify too
 
 	constexpr auto PLUGIN_NAME = "Death Timer - Immersive Bleedout.esp"sv;
 
-	// The NPCs this plugin is meant to rescue: named ones, and unnamed ones too when the MCM option
+	// The NPCs this plugin is meant to rescue: named ones, and unnamed ones too when the ini option
 	// is on. Everyone else keeps vanilla (or the Papyrus side's) behaviour: essential/protected NPCs
 	// are already knocked out by the mod, and the player's own blows always kill.
 	bool IsRescueCandidate(RE::Actor* a_actor, RE::Actor* a_attacker)

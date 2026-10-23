@@ -22,7 +22,7 @@ When a friendly NPC falls, they collapse, unconscious and paralysed, and go down
 [list]
 [*][b]Dying:[/b] "[i]Lydia has fallen unconscious and is dying.[/i]" A real-time [b]Death Timer[/b] starts. Heal them before it runs out, or they die. This path covers:
 [list]
-[*]your [b]followers[/b] (can be switched off in the MCM)
+[*]your [b]followers[/b] (can be switched off in the settings)
 [*][b]named NPCs[/b] saved from death by the SKSE plugin
 [*][b]unnamed NPCs[/b] such as guards and soldiers, if you turn on "Rescue Generic NPCs"
 [/list]
@@ -79,14 +79,16 @@ Once a rescued NPC is back on their feet, they thank you in their own voice, usi
 
 [line]
 
-[size=5][b]MCM Settings[/b][/size]
+[size=5][b]Settings[/b][/size]
+No MCM: the settings are in [b]SKSE/Plugins/DeathTimer.ini[/b], read every time you load a save or start a new game (edit, save the file, then load).
 [list]
-[*][b]Recover Hours[/b]: in-game hours before a knocked-out NPC recovers on their own (default 6, 0 = never).
-[*][b]Follower Death Timer[/b]: followers go down dying (default on). Off: followers are only knocked out and recover on their own.
-[*][b]Time Until Death[/b]: seconds a dying NPC has before they die unless healed (default 60, 10 to 300).
-[*][b]Rescue Generic NPCs[/b]: unnamed friendly NPCs can be saved too (default off).
-[*][b]Use Notifications[/b]: knocked out, dying, died and potion messages (default on).
+[*][b]fRecoverHours[/b]: in-game hours before a knocked-out NPC recovers on their own (default 6, 0 = never).
+[*][b]bFollowerDeathTimer[/b]: followers go down dying (default 1). 0: followers are only knocked out and recover on their own.
+[*][b]fDeathTimerSeconds[/b]: seconds a dying NPC has before they die unless healed (default 60, at least 10).
+[*][b]bRescueGenericNPCs[/b]: unnamed friendly NPCs can be saved too (default 0).
+[*][b]bAllowNotifications[/b]: knocked out, dying, died and potion messages (default 1).
 [/list]
+To keep your changes through updates, put your copy of the ini in a separate mod that loads after this one.
 
 [line]
 
@@ -95,8 +97,6 @@ Once a rescued NPC is back on their feet, they thank you in their own voice, usi
 [*]Skyrim [b]Special Edition 1.5.97[/b] or [b]Anniversary Edition[/b] 1.6.x / 1.7.x (one SKSE plugin for both; SE 1.5.97 support is new, please report any problems)
 [*]SKSE64
 [*]Address Library for SKSE Plugins ([b]v13 or newer[/b] if you're on 1.7.104)
-[*]SkyUI
-[*]MCM Helper
 [*]powerofthree's Papyrus Extender
 [*]Spell Perk Item Distributor (SPID)
 [*][url=https://www.nexusmods.com/skyrimspecialedition/mods/193566]Modifier Key Framework[/url] (by eXgamble): the Give Potion / Search prompt and the modifier key

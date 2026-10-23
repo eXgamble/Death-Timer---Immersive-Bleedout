@@ -1,7 +1,15 @@
 #include "Papyrus.h"
 
+#include "Settings.h"
+
 namespace
 {
+	// Time Until Death from DeathTimer.ini
+	float GetDeathTimerSeconds(RE::StaticFunctionTag*)
+	{
+		return Settings::DeathTimerSeconds();
+	}
+
 	// Protected on this one NPC in the world, not on their NPC record: unnamed NPCs share a record
 	// (every "Whiterun Guard"), so protecting the record would protect all of them. The engine's own
 	// "can this be killed" checks read this per-actor flag. Used while an NPC downed by this plugin
@@ -25,6 +33,7 @@ namespace Papyrus
 	bool Register(RE::BSScript::IVirtualMachine* a_vm)
 	{
 		a_vm->RegisterFunction("SetDownedProtection", "DeathTimer", SetDownedProtection);
+		a_vm->RegisterFunction("GetDeathTimerSeconds", "DeathTimer", GetDeathTimerSeconds);
 		logger::info("Papyrus functions registered");
 		return true;
 	}

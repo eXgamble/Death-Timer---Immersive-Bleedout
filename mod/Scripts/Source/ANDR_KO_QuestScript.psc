@@ -82,7 +82,7 @@ EndFunction
 
 ; Two paths once knocked out:
 ;  - dying, healed or dead, no game-time recovery: followers (player teammates) that aren't essential,
-;    while the MCM "Follower Death Timer" option is on, and NPCs the DeathTimer SKSE plugin saved
+;    while bFollowerDeathTimer (DeathTimer.ini) is on, and NPCs the DeathTimer SKSE plugin saved
 ;    from a fatal hit (in ANDR_KO_FACT_Dying)
 ;  - everyone else: knocked out, recovers over game time, never dies. That's essential NPCs (by any quest
 ;    alias too, e.g. Serana, story NPCs) and protected non-followers, who in vanilla only the player can kill
@@ -98,7 +98,7 @@ EndFunction
 
 GlobalVariable Property ANDR_KO_GLOB_FollowerDeathTimer Auto
 
-; MCM "Follower Death Timer" (set from the menu on every load by ANDR_KO_Quest_MCMScript.LoadSettings)
+; bFollowerDeathTimer in DeathTimer.ini (the SKSE plugin sets it on every load)
 GlobalVariable Function GetFollowerDeathTimer()
 	If ANDR_KO_GLOB_FollowerDeathTimer == None
 		ANDR_KO_GLOB_FollowerDeathTimer = Game.GetFormFromFile(0xFB8, "Death Timer - Immersive Bleedout.esp") As GlobalVariable

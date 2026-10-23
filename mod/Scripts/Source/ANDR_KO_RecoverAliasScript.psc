@@ -36,9 +36,9 @@ EndFunction
 
 ; ==== Death Timer ====
 
-; Read straight from MCM Helper's saved setting, no global needed. Falls back to 60 if unset.
+; From DeathTimer.ini, through the SKSE plugin. Falls back to 60 without it.
 Float Function GetDeathTimerSeconds()
-    Float Seconds = MCM.GetModSettingFloat("Death Timer - Immersive Bleedout", "fDeathTimerSeconds:General")
+    Float Seconds = DeathTimer.GetDeathTimerSeconds()
     If Seconds < 10.0
         Return 60.0
     EndIf

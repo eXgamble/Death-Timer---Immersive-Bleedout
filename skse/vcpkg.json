@@ -9,6 +9,7 @@
     "directxtk",
     "directxmath",
     "rapidcsv",
+    "simpleini",
     "xbyak"
   ]
 }

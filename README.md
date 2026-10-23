@@ -15,8 +15,8 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
 ## Features
 
 - **Two paths when an NPC falls**
-  - *Dying*: followers (can be switched off in the MCM), and NPCs saved from death by the SKSE plugin. A real-time Death Timer
-    (default 60 s, 10-300 s in the MCM). No escaping it by leaving the cell or waiting.
+  - *Dying*: followers (can be switched off in the settings), and NPCs saved from death by the SKSE plugin. A real-time Death Timer
+    (default 60 s, set in the settings). No escaping it by leaving the cell or waiting.
   - *Knocked out*: essential NPCs and protected non-followers. They get back up after a few
     in-game hours and never die.
 - **Rescue**: activate a downed NPC to **Give Potion** (your cheapest healing potion; food, poisons
@@ -26,29 +26,33 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
   by default) and the prompt switches to `Search`; activate to open their inventory.
 - **Finish them yourself**: a harmful hit from you on a downed NPC kills them. It counts as your kill,
   followers included, so killing a follower is a crime, as in vanilla.
-- **SKSE plugin**: named, friendly NPCs (and, with the MCM option, unnamed ones) that take a fatal
+- **SKSE plugin**: named, friendly NPCs (and, with the settings option, unnamed ones) that take a fatal
   hit from anyone but you go down dying instead of dying outright. Enemies leave them alone while
   they're down. Scripted and quest deaths are never touched.
 - Built-in fixes: NPCs stuck in the bleedout animation can be helped up; NPCs who recover while
   you're away get up properly when you return.
 
-### MCM
+### Settings
 
-| Option | Default |
+In `SKSE/Plugins/DeathTimer.ini` (no MCM needed). Read every time you load a save or start a new game:
+edit the file, save it, then load.
+
+| Setting | Default |
 |---|---|
-| Recover Hours: in-game hours before a knocked-out NPC recovers on their own (0 = never) | 6 |
-| Follower Death Timer: followers go down dying (off: only knocked out, they recover on their own) | on |
-| Time Until Death: seconds a dying NPC has before they die unless healed | 60 |
-| Rescue Generic NPCs: unnamed friendly NPCs (guards, soldiers, travellers) can be saved too | off |
-| Use Notifications | on |
+| `fRecoverHours`: in-game hours before a knocked-out NPC recovers on their own (0 = never) | 6 |
+| `bFollowerDeathTimer`: followers go down dying (0: only knocked out, they recover on their own) | 1 |
+| `fDeathTimerSeconds`: seconds a dying NPC has before they die unless healed (at least 10) | 60 |
+| `bRescueGenericNPCs`: unnamed friendly NPCs (guards, soldiers, travellers) can be saved too | 0 |
+| `bAllowNotifications`: knocked out, dying, died and potion messages | 1 |
+
+To keep your changes safe from updates, put your copy of `DeathTimer.ini` in a separate mod that
+loads after this one (MO2: lower in the left pane).
 
 ## Requirements
 
 - [SKSE64](https://www.nexusmods.com/skyrimspecialedition/mods/30379)
 - [Address Library for SKSE Plugins](https://www.nexusmods.com/skyrimspecialedition/mods/32444)
   (v13 or newer for game version 1.7.104)
-- [SkyUI](https://www.nexusmods.com/skyrimspecialedition/mods/12604)
-- [MCM Helper](https://www.nexusmods.com/skyrimspecialedition/mods/53000)
 - [powerofthree's Papyrus Extender](https://www.nexusmods.com/skyrimspecialedition/mods/22854)
 - [Spell Perk Item Distributor (SPID)](https://www.nexusmods.com/skyrimspecialedition/mods/36869)
 - [Modifier Key Framework](https://www.nexusmods.com/skyrimspecialedition/mods/193566) 1.8.0 or newer (by eXgamble): the Give Potion / Search activation and the modifier key
@@ -64,7 +68,7 @@ Bleedout Fix (their features are built in).
 ## Repository layout
 
 ```
-mod/              the mod exactly as installed (Data-shaped): plugin, scripts + source, MCM, SEQ, DLL
+mod/              the mod exactly as installed (Data-shaped): plugin, scripts + source, SEQ, DLL + its ini
 skse/             source of the SKSE plugin (DeathTimer.dll)
 LICENSE-MOD.md    license for the mod files (ABR's terms)
 skse/LICENSE      license for the SKSE plugin (GPL-3.0-or-later)

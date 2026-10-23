@@ -2,6 +2,7 @@
 
 #include "Hooks.h"
 #include "Papyrus.h"
+#include "Settings.h"
 
 namespace
 {
@@ -28,6 +29,11 @@ namespace
 		case SKSE::MessagingInterface::kDataLoaded:
 			logger::info("Data loaded");
 			Hooks::OnDataLoaded();
+			Settings::OnDataLoaded();
+			break;
+		case SKSE::MessagingInterface::kPostLoadGame:
+		case SKSE::MessagingInterface::kNewGame:
+			Settings::LoadAndApply();
 			break;
 		default:
 			break;

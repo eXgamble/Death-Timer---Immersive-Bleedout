@@ -19,12 +19,14 @@ endif()
 add_commonlibsse_plugin(${PROJECT_NAME}
 	NAME "DeathTimer"
 	AUTHOR "eXgamble"
-	SOURCES src/plugin.cpp src/Hooks.cpp src/Papyrus.cpp)
+	SOURCES src/plugin.cpp src/Hooks.cpp src/Papyrus.cpp src/Settings.cpp)
+
+find_path(SIMPLEINI_INCLUDE_DIRS "SimpleIni.h")
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 target_compile_options(${PROJECT_NAME} PRIVATE /Zc:preprocessor /permissive- /EHsc /utf-8 /W4)
 target_compile_definitions(${PROJECT_NAME} PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX UNICODE _UNICODE)
-target_include_directories(${PROJECT_NAME} PRIVATE src)
+target_include_directories(${PROJECT_NAME} PRIVATE src ${SIMPLEINI_INCLUDE_DIRS})
 target_precompile_headers(${PROJECT_NAME} PRIVATE src/PCH.h)
 
 # Copy the DLL into the mod after every build. The PDB (debug symbols, ~35 MB) is not shipped:
