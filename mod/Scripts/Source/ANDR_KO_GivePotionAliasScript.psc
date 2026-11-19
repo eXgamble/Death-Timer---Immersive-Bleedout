@@ -27,9 +27,9 @@ Event OnItemAdded(Form akBaseItem, int aiItemCount, ObjectReference akItemRefere
 			Int ReturnAmountPotions = aiItemCount - 1
 			SelfActor.RemoveItem(akBaseItem, ReturnAmountPotions, true, PlayerRef)
 		EndIf
-		; using Andrealphus' Papyrus Functions to bypass conflict of Ultimate Animated Potions.
+		; DeathTimer.CastPotion skips the drinking animation, so Ultimate Animated Potions stays out of it.
 		SelfActor.RemoveItem(akBaseItem, 1, true)
-		ANDR_PapyrusFunctions.CastPotion(PlayerRef, akBaseItem as Potion, SelfActor)					; Function from Andrealphus' Papyrus Functions
+		DeathTimer.CastPotion(PlayerRef, akBaseItem as Potion, SelfActor)
 		Notification("" + SelfActorName + " has consumed " + akBaseItemName + ".")
 	Else
 		SelfActor.RemoveItem(akBaseItem, aiItemCount, true, PlayerRef)

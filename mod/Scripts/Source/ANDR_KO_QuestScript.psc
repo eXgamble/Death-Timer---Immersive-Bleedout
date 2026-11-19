@@ -368,7 +368,7 @@ Function AdministerPotion(Actor akTarget)
 		Return
 	EndIf
 	Player.RemoveItem(HealthPotion, 1, true)
-	ANDR_PapyrusFunctions.CastPotion(Player, HealthPotion, akTarget)		; recovery is picked up by ANDR_KO_RecoverScript
+	DeathTimer.CastPotion(Player, HealthPotion, akTarget)		; recovery is picked up by ANDR_KO_RecoverScript
 	Notify("You gave " + HealthPotion.GetName() + " to " + akTarget.GetDisplayName() + ".")
 EndFunction
 

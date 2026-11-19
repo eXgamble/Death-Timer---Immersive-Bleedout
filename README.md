@@ -56,7 +56,6 @@ loads after this one (MO2: lower in the left pane).
 - [powerofthree's Papyrus Extender](https://www.nexusmods.com/skyrimspecialedition/mods/22854)
 - [Spell Perk Item Distributor (SPID)](https://www.nexusmods.com/skyrimspecialedition/mods/36869)
 - [Modifier Key Framework](https://www.nexusmods.com/skyrimspecialedition/mods/193566) 1.8.0 or newer (by eXgamble): the Give Potion / Search activation and the modifier key
-- [Andrealletius' Papyrus Functions](https://www.nexusmods.com/skyrimspecialedition/mods/85252)
 - Optional: [FormList Manipulator](https://www.nexusmods.com/skyrimspecialedition/mods/74037)
   (CACO blood potion and Vokrii compatibility)
 
@@ -105,8 +104,9 @@ MO2's own `mod/meta.ini` is ignored by git.
 ## Credits
 
 - **Andrealletius**: [Andrealletius' Bleedout Revamp](https://www.nexusmods.com/skyrimspecialedition/mods/49240),
-  the foundation of this mod (knockout system, recovery, healing detection), and Andrealletius'
-  Papyrus Functions.
+  the foundation of this mod (knockout system, recovery, healing detection). Giving a potion
+  without the drinking animation follows the idea of Andrealletius' Papyrus Functions' CastPotion,
+  now built into the SKSE plugin.
 - **eXgamble**: Death Timer, the two-path system, rescue and dialogue changes, SKSE plugin.
 - The CommonLibSSE-NG maintainers and contributors.
 
