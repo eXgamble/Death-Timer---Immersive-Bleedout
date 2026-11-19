@@ -19,7 +19,7 @@ endif()
 add_commonlibsse_plugin(${PROJECT_NAME}
 	NAME "DeathTimer"
 	AUTHOR "eXgamble"
-	SOURCES src/plugin.cpp src/Hooks.cpp src/Papyrus.cpp src/Settings.cpp)
+	SOURCES src/plugin.cpp src/Hooks.cpp src/Papyrus.cpp src/Settings.cpp src/Wisps.cpp)
 
 find_path(SIMPLEINI_INCLUDE_DIRS "SimpleIni.h")
 

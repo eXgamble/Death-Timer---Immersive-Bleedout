@@ -3,6 +3,7 @@
 #include "Hooks.h"
 #include "Papyrus.h"
 #include "Settings.h"
+#include "Wisps.h"
 
 namespace
 {
@@ -30,8 +31,12 @@ namespace
 			logger::info("Data loaded");
 			Hooks::OnDataLoaded();
 			Settings::OnDataLoaded();
+			Wisps::OnDataLoaded();
 			break;
 		case SKSE::MessagingInterface::kPostLoadGame:
+			Settings::LoadAndApply();
+			Wisps::OnGameLoaded();
+			break;
 		case SKSE::MessagingInterface::kNewGame:
 			Settings::LoadAndApply();
 			break;
@@ -50,6 +55,12 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 	SKSE::GetMessagingInterface()->RegisterListener(OnMessage);
 	SKSE::GetPapyrusInterface()->Register(Papyrus::Register);
 	Hooks::Install();
+
+	auto* serialization = SKSE::GetSerializationInterface();
+	serialization->SetUniqueID('DTMR');
+	serialization->SetSaveCallback(Wisps::Save);
+	serialization->SetLoadCallback(Wisps::Load);
+	serialization->SetRevertCallback(Wisps::Revert);
 
 	logger::info("DeathTimer loaded");
 	return true;

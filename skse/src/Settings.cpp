@@ -25,6 +25,7 @@ namespace
 	Global followerDeathTimer{ 0xFB8, "ANDR_KO_GLOB_FollowerDeathTimer" };
 
 	std::atomic<float> deathTimerSeconds{ 60.0f };  // read on the Papyrus VM's thread
+	std::atomic<bool>  downedWisp{ true };
 
 	void Set(const Global& a_global, float a_value)
 	{
@@ -63,8 +64,10 @@ namespace Settings
 		}
 		const bool generic = ini.GetBoolValue("General", "bRescueGenericNPCs", false);
 		const bool notifications = ini.GetBoolValue("General", "bAllowNotifications", true);
+		const bool wisp = ini.GetBoolValue("General", "bDownedWisp", true);
 
 		deathTimerSeconds = seconds;
+		downedWisp = wisp;
 		Set(recoverHours, hours);
 		Set(followerDeathTimer, followers ? 1.0f : 0.0f);
 		Set(rescueGenericNPCs, generic ? 1.0f : 0.0f);
@@ -75,12 +78,17 @@ namespace Settings
 		Set(notOnlyTeamMates, 1.0f);
 		Set(downHealthThreshold, 10.0f);
 
-		logger::info("Settings: recover hours {}, follower Death Timer {}, time until death {} s, rescue generic NPCs {}, notifications {}",
-			hours, followers, seconds, generic, notifications);
+		logger::info("Settings: recover hours {}, follower Death Timer {}, time until death {} s, rescue generic NPCs {}, notifications {}, downed wisp {}",
+			hours, followers, seconds, generic, notifications, wisp);
 	}
 
 	float DeathTimerSeconds()
 	{
 		return deathTimerSeconds;
+	}
+
+	bool DownedWisp()
+	{
+		return downedWisp;
 	}
 }

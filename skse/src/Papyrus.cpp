@@ -1,6 +1,7 @@
 #include "Papyrus.h"
 
 #include "Settings.h"
+#include "Wisps.h"
 
 namespace
 {
@@ -53,6 +54,13 @@ namespace
 				source ? source.get() : target.get());
 		});
 	}
+
+	// A downed named NPC's state for the wisp over them and the "DeathTimer_DownedState" mod event:
+	// 1 knocked out, 2-4 dying (yellow, orange, red), 0 no longer down. Unnamed NPCs are ignored.
+	void SetDownedState(RE::StaticFunctionTag*, RE::Actor* a_actor, std::int32_t a_state)
+	{
+		Wisps::SetState(a_actor, a_state);
+	}
 }
 
 namespace Papyrus
@@ -62,6 +70,7 @@ namespace Papyrus
 		a_vm->RegisterFunction("SetDownedProtection", "DeathTimer", SetDownedProtection);
 		a_vm->RegisterFunction("GetDeathTimerSeconds", "DeathTimer", GetDeathTimerSeconds);
 		a_vm->RegisterFunction("CastPotion", "DeathTimer", CastPotion);
+		a_vm->RegisterFunction("SetDownedState", "DeathTimer", SetDownedState);
 		logger::info("Papyrus functions registered");
 		return true;
 	}

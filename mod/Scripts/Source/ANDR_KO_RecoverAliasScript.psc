@@ -9,6 +9,7 @@ Event OnDeath(Actor akKiller)
 		ANDR_KO_Token = Game.GetFormFromFile(0x807, "Death Timer - Immersive Bleedout.esp") As MiscObject
 	EndIf
     (Self.GetReference() As Actor).RemoveItem(ANDR_KO_Token, 999)
+    DyingStep = 0
     UnregisterForUpdateGameTime()
     UnregisterForUpdate()
     Clear()
@@ -23,9 +24,17 @@ Function StartMonitorRecovery()
         If ANDR_KO_RecoverHours == None
             ANDR_KO_RecoverHours = Game.GetFormFromFile(0x809, "Death Timer - Immersive Bleedout.esp") As GlobalVariable
         EndIf
-        If (GetOwningQuest() As ANDR_KO_QuestScript).IsDeathTimerCandidate(Self.GetReference() As Actor)
-            RegisterForSingleUpdate(GetDeathTimerSeconds())			; Death Timer (real time), no recovering over time
+        Actor SelfActor = Self.GetReference() As Actor
+        If (GetOwningQuest() As ANDR_KO_QuestScript).IsDeathTimerCandidate(SelfActor)
+            ; Death Timer (real time), no recovering over time. Run in three steps (40%, 40%, 20%) so the wisp
+            ; over them turns yellow, orange, then red; OnUpdate kills them after the last step.
+            TimerSeconds = GetDeathTimerSeconds()
+            DyingStep = 2
+            DeathTimer.SetDownedState(SelfActor, 2)
+            RegisterForSingleUpdate(TimerSeconds * 0.4)
         Else
+            DyingStep = 0
+            DeathTimer.SetDownedState(SelfActor, 1)				; knocked out: pale blue wisp
             Float fRecoverHours = ANDR_KO_RecoverHours.GetValue()
             If fRecoverHours > 0										; if global is set to 0 or lower, disable recovering over time!
                 RegisterForSingleUpdateGameTime(fRecoverHours)
@@ -47,10 +56,26 @@ EndFunction
 
 Bool Dying
 
+; The Death Timer's step: 2 yellow, 3 orange, 4 red (DeathTimer.SetDownedState), 0 when not dying. A save made
+; before the steps existed has 0 here and a single update for the whole time: that one simply kills.
+Int DyingStep
+Float TimerSeconds
+
 Event OnUpdate()
     Actor SelfActor = Self.GetReference() As Actor
     If SelfActor && SelfActor.GetItemCount(ANDR_KO_Token) > 0		; still knocked out, nobody treated them
-        Die(SelfActor)
+        If DyingStep == 2
+            DyingStep = 3
+            DeathTimer.SetDownedState(SelfActor, 3)
+            RegisterForSingleUpdate(TimerSeconds * 0.4)
+        ElseIf DyingStep == 3
+            DyingStep = 4
+            DeathTimer.SetDownedState(SelfActor, 4)
+            RegisterForSingleUpdate(TimerSeconds * 0.2)
+        Else
+            DyingStep = 0
+            Die(SelfActor)
+        EndIf
     EndIf
 EndEvent
 
@@ -121,6 +146,7 @@ Function Die(Actor akActor, Bool abKilledByPlayer = False)
         Return
     EndIf
     Dying = True
+    DyingStep = 0
     UnregisterForUpdate()
     UnregisterForUpdateGameTime()									; no auto-recovery for the dead
     ANDR_KO_QuestScript KOQuest = GetOwningQuest() As ANDR_KO_QuestScript
@@ -137,6 +163,7 @@ Function InterruptMonitorRecovery()
 		ANDR_KO_Token = Game.GetFormFromFile(0x807, "Death Timer - Immersive Bleedout.esp") As MiscObject
 	EndIf
     If (Self.GetReference() As Actor).GetItemCount(ANDR_KO_Token) == 0
+        DyingStep = 0
         UnregisterForUpdateGameTime()
         UnregisterForUpdate()										; healed in time: cancel the Death Timer
     EndIf

@@ -29,6 +29,10 @@ by **Andrealletius**, reworked and expanded by **eXgamble**.
 - **SKSE plugin**: named, friendly NPCs (and, with the settings option, unnamed ones) that take a fatal
   hit from anyone but you go down dying instead of dying outright. Enemies leave them alone while
   they're down. Scripted and quest deaths are never touched.
+- **A wisp marks the fallen**: a glowing wisp hovers over every downed named NPC so you can find them in
+  a big fight. Pale blue: knocked out. Yellow, then orange, then red (the last 20% of the time): dying.
+  It has no collision, so arrows pass through and you can still reach the body. Gone once they're up
+  or dead. Unnamed NPCs never get one.
 - Built-in fixes: NPCs stuck in the bleedout animation can be helped up; NPCs who recover while
   you're away get up properly when you return.
 
@@ -44,6 +48,7 @@ edit the file, save it, then load.
 | `fDeathTimerSeconds`: seconds a dying NPC has before they die unless healed (at least 10) | 60 |
 | `bRescueGenericNPCs`: unnamed friendly NPCs (guards, soldiers, travellers) can be saved too | 0 |
 | `bAllowNotifications`: knocked out, dying, died and potion messages | 1 |
+| `bDownedWisp`: the glowing wisp over downed named NPCs | 1 |
 
 To keep your changes safe from updates, put your copy of `DeathTimer.ini` in a separate mod that
 loads after this one (MO2: lower in the left pane).
@@ -64,11 +69,30 @@ The SKSE plugin supports **Special Edition 1.5.97 and Anniversary Edition** (1.6
 with Andrealletius' Bleedout Revamp (this replaces it), Press E to Heal Followers or NPC Stuck in
 Bleedout Fix (their features are built in).
 
+### For other mods: the downed-state event
+
+Whenever a downed named NPC's state changes, the SKSE plugin sends the mod event
+`DeathTimer_DownedState` (sender = the NPC, `strArg` = the state, `numArg` = its number), and sends it
+again after a load for everyone still down. It's sent whether or not the wisp is switched on.
+
+| `numArg` | `strArg` | Meaning |
+|---|---|---|
+| 1 | `knocked_out` | knocked out, gets up on their own |
+| 2 | `dying_1` | dying, the timer just started |
+| 3 | `dying_2` | dying, 40% of the time gone |
+| 4 | `dying_3` | dying, 80% of the time gone |
+| 0 | `gone` | up again, or dead |
+
+Papyrus: `RegisterForModEvent("DeathTimer_DownedState", "OnDownedState")`, then
+`Event OnDownedState(String asEventName, String asState, Float afState, Form akNPC)`. SKSE plugins
+can listen on `SKSE::GetModCallbackEventSource()`.
+
 ## Repository layout
 
 ```
 mod/              the mod exactly as installed (Data-shaped): plugin, scripts + source, SEQ, DLL + its ini
 skse/             source of the SKSE plugin (DeathTimer.dll)
+tools/            make_wisps.py: builds the four wisp meshes and palettes from vanilla's Soul Cairn wisp
 LICENSE-MOD.md    license for the mod files (ABR's terms)
 skse/LICENSE      license for the SKSE plugin (GPL-3.0-or-later)
 ```
@@ -107,6 +131,7 @@ MO2's own `mod/meta.ini` is ignored by git.
   the foundation of this mod (knockout system, recovery, healing detection). Giving a potion
   without the drinking animation follows the idea of Andrealletius' Papyrus Functions' CastPotion,
   now built into the SKSE plugin.
+- **Bethesda**: the wisp is the Soul Cairn wisp from Dawnguard, recoloured.
 - **eXgamble**: Death Timer, the two-path system, rescue and dialogue changes, SKSE plugin.
 - The CommonLibSSE-NG maintainers and contributors.
 

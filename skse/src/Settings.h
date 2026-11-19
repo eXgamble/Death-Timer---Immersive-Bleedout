@@ -12,4 +12,7 @@ namespace Settings
 
 	// Time Until Death: real-time seconds a dying NPC has (read by Papyrus, DeathTimer.psc).
 	float DeathTimerSeconds();
+
+	// Downed Wisp: a glowing wisp over downed named NPCs (Wisps.cpp).
+	bool DownedWisp();
 }
